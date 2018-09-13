@@ -1,0 +1,60 @@
+// Name		: ItemMallWindowTopUp.h
+// Project	: Lib-RanClientUI
+
+#pragma once
+
+#include "UIWindowEx.h"
+
+class CUIEditBoxMan;
+
+class CItemMallTopUpWindow : public CUIWindowEx
+{
+protected:
+	enum
+	{
+		ITEM_MALL_WINDOW_SUBMIT = ET_CONTROL_NEXT,
+		ITEM_MALL_WINDOW_CANCEL,
+		TOPUP_WINDOW_EDITMAN,
+		TOPUP_WINDOW_EDIT_VOCID,
+		TOPUP_WINDOW_EDIT_VOCID2,
+		TOPUP_WINDOW_EDIT_VOC,
+		TOPUP_WINDOW_EDIT_VOC2,
+		TOPUP_WINDOW_EDIT_VOC3,
+		TOPUP_WINDOW_EDIT_CAPTCHA1
+	};
+
+public:
+	static int nLIMIT_VOC;
+
+public:
+	CItemMallTopUpWindow();
+	virtual	~CItemMallTopUpWindow();
+
+public:
+	void CreateSubControl();
+	void ResetAll();
+	void SetCaptcha();
+	void SndClaimVoc();
+	int makeRandomNumber(int nMax);
+
+public:
+	virtual void Update(int x, int y, BYTE LB, BYTE MB, BYTE RB, int nScroll, float fElapsedTime, BOOL bFirstControl);
+	virtual void TranslateUIMessage(UIGUID ControlID, DWORD dwMsg);
+	virtual	void SetVisibleSingle(BOOL bVisible);
+
+private:
+	CBasicTextBox*	CreateStaticControl(char* szConatrolKeyword, CD3DFontPar* pFont, int nAlign, const UIGUID& cID = NO_ID);
+
+private:
+	CUIControl*			m_pItemMallTopUp_BG;
+	CBasicTextBox*		m_pTextVocID;
+	CBasicTextBox*		m_pTextVoc;
+	CBasicTextBox*		m_pTextCaptcha1;
+	CBasicTextBox*		m_pTextCaptcha2;
+	CBasicTextBox*		m_pTextSeperator;
+	CBasicTextBox*		m_pTextSeperator2;
+	CBasicTextBox*		m_pTextSeperator3;
+	CUIEditBoxMan*		m_pEditBoxManTopUp;
+
+	INT					m_pCaptcha2;
+};

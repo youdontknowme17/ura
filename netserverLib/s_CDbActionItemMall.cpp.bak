@@ -1,0 +1,61 @@
+// Name		: s_CDbActionItemMall.cpp
+// Project	: Lib-NetServer
+
+#include "StdAfx.h"
+
+#include "s_CDbAction.h"
+#include "s_CSessionServer.h"
+#include "s_CFieldServer.h"
+#include "s_CAgentServer.h"
+
+#include "../RanClientLib/G-Logic/GLCharData.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+// SndClaimVoc
+CAgentSndClaimVoc::CAgentSndClaimVoc(
+	const TCHAR* szUserID,
+	const TCHAR* szVocID,
+	const TCHAR* szVocCodes,
+	const TCHAR* szCaptcha1,
+	const TCHAR* szCaptcha2,
+	DWORD dwClient,
+	const TCHAR* szUserIP,
+	USHORT uPort
+)
+{
+	m_strUserID = szUserID;
+	m_strVocID = szVocID;
+	m_strVocCodes = szVocCodes;
+	m_strCaptcha1 = szCaptcha1;
+	m_strCaptcha2 = szCaptcha2;
+	m_dwClient = dwClient;
+	m_strUserIP = szUserIP;
+	m_nPort = uPort;
+}
+
+int CAgentSndClaimVoc::Execute(CServer* pServer)
+{
+	CAgentServer* pTemp = reinterpret_cast<CAgentServer*> (pServer);
+
+	if (pServer == NULL) return NET_ERROR;
+
+	int nResult = COdbcManager::GetInstance()->ITEMMALLSndClaimVoc(
+		m_strUserID.GetString(),
+		m_strVocID.GetString(),
+		m_strVocCodes.GetString(),
+		m_strCaptcha1.GetString(),
+		m_strCaptcha2.GetString()
+	);
+
+	pTemp->MsgSndClaimVocBack(
+		nResult,
+		m_dwClient,
+		m_strUserIP.GetString(),
+		m_uPort
+	);
+
+	return NET_OK;
+}

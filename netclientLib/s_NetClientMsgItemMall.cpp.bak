@@ -1,0 +1,41 @@
+// Name		: s_NetClientMsgItemMall.cpp
+// Project	: Lib-NetClient
+
+#include "StdAfx.h"
+#include "s_NetClient.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+// SndClaimVoc
+int CNetClient::SndClaimVoc(
+	const TCHAR* szVocID,
+	const TCHAR* szVocCodes,
+	const TCHAR* szCaptcha1,
+	const TCHAR* szCaptcha2
+)
+{
+	if (szVocID == NULL) return NET_ERROR;
+	if (szVocCodes == NULL) return NET_ERROR;
+	if (szCaptcha1 == NULL) return NET_ERROR;
+	if (szCaptcha2 == NULL) return NET_ERROR;
+
+	NET_SNDCLAIMVOC_DATA nscvd;
+
+	nscvd.nmg.nType = NET_MSG_SNDCLAIMVOC;
+
+	::StringCchCopy(nscvd.szVocID, USR_ID_LENGTH + 1, szVocID);
+	::StringCchCopy(nscvd.szVocCodes, USR_ID_LENGTH + 1, szVocCodes);
+	::StringCchCopy(nscvd.szCaptcha1, USR_RAND_PASS_LENGTH + 1, szCaptcha1);
+	::StringCchCopy(nscvd.szCaptcha2, USR_RAND_PASS_LENGTH + 1, szCaptcha2);
+	::StringCchCopy(nscvd.szEnCrypt, ENCRYPT_KEY + 1, m_szEncryptKey);
+
+	m_Tea.encrypt(nscvd.szVocID, USR_ID_LENGTH + 1);
+	m_Tea.encrypt(nscvd.szVocCodes, USR_ID_LENGTH + 1);
+	m_Tea.encrypt(nscvd.szCaptcha1, USR_RAND_PASS_LENGTH + 1);
+	m_Tea.encrypt(nscvd.szCaptcha2, USR_RAND_PASS_LENGTH + 1);
+	m_Tea.encrypt(nscvd.szEnCrypt, ENCRYPT_KEY + 1);
+
+	return Send((char *)&nscvd);
+}

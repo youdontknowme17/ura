@@ -1,0 +1,53 @@
+// Name		: s_COdbcItemMall.cpp
+// Project	: Lib-NetServer
+
+#include "StdAfx.h"
+#include "s_COdbcManager.h"
+#include "s_CDbAction.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+// ITEMMALLSndClaimVoc
+int COdbcManager::ITEMMALLSndClaimVoc(
+	const TCHAR* szUserID,
+	const TCHAR* szVocID,
+	const TCHAR* szVocCodes,
+	const TCHAR* szCaptcha1,
+	const TCHAR* szCaptcha2
+)
+{
+	CString strUserID = szUserID;
+	strUserID.Trim(_T(" "));
+	strUserID.Replace(_T("'"), _T("''"));
+
+	CString strVocID = szVocID;
+	strVocID.Trim(_T(" "));
+	strVocID.Replace(_T("'"), _T("''"));
+
+	CString strVocCodes = szVocCodes;
+	strVocCodes.Trim(_T(" "));
+	strVocCodes.Replace(_T("'"), _T("''"));
+
+	CString strCaptcha1 = szCaptcha1;
+	strCaptcha1.Trim(_T(" "));
+	strCaptcha1.Replace(_T("'"), _T("''"));
+
+	CString strCaptcha2 = szCaptcha2;
+	strCaptcha2.Trim(_T(" "));
+	strCaptcha2.Replace(_T("'"), _T("''"));
+
+	TCHAR szTemp[256] = { 0 };
+	_snprintf(szTemp, 512, "{call ITEMMALLSndClaimVoc('%s','%s','%s','%s','%s', ?)}",
+		strUserID.GetString(),
+		strVocID.GetString(),
+		strVocCodes.GetString(),
+		strCaptcha1.GetString(),
+		strCaptcha2.GetString()
+	);
+
+	int nReturn = m_pUserDB->ExecuteSpInt(szTemp);
+
+	return nReturn;
+}
