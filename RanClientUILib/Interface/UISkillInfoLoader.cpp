@@ -543,10 +543,10 @@ namespace NS_SKILLINFO
 				float fADDON_VAR_SCALE = fADDON_VAR * COMMENT::IMPACT_ADDON_SCALE[sAPPLY.sADDONS[_a].emADDON];
 				if ( fADDON_VAR > 0 )
 				{
-					//if (bPercent)
-					//	strText.Format ( "%s: +%3.2f%s", COMMENT::IMPACT_ADDON[sAPPLY.sADDONS[_a].emADDON].c_str(), fADDON_VAR_SCALE, "%" );
-					//else
-					//{
+					if (bPercent)
+						strText.Format ( "%s: +%3.2f%s", COMMENT::IMPACT_ADDON[sAPPLY.sADDONS[_a].emADDON].c_str(), fADDON_VAR_SCALE, "%" );
+					else
+					{
 						CString strVAL;
 						int nVAL = int(fADDON_VAR_SCALE);
 						if(nVAL >= 100 )
@@ -554,8 +554,8 @@ namespace NS_SKILLINFO
 						else
 							strVAL.Format("%2d", nVAL);
 
-//						strText.Format ( "%s: +%s", COMMENT::IMPACT_ADDON[sAPPLY.sADDONS[_a].emADDON].c_str(), strVAL);
-					//}
+						strText.Format ( "%s: +%s", COMMENT::IMPACT_ADDON[sAPPLY.sADDONS[_a].emADDON].c_str(), strVAL);
+					}
 
 					AddTextNoSplit(strText, NS_UITEXTCOLOR::GREEN );
 				}
